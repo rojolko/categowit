@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 function get_line(&$file)
 {
@@ -77,6 +78,32 @@ function generate_gnuplot_file($tab)
   fclose($fd);
 }
 
+function	make_tabs($fd, &$nb_nuages, &$point_list, &$orph_points)
+{
+	$nb_nuages = get_line($fd);
+	for ($i = 0; ($temp = get_line($fd)) != "#"; ++$i)
+	{
+		$temp2 = explode(" ", $temp);
+		$point_list[$i][x] = $temp2[0];
+		$point_list[$i][y] = $temp2[1];
+	}
+	for ($i = 0; $temp = get_line($fd); ++$i)
+	{
+		$temp2 = explode(" ", $temp);
+		$orph_points[$i][x] = $temp2[0];
+		$orph_points[$i][y] = $temp2[1];
+	}
+}
+
+function	categowit($fd)
+{
+	make_tabs($fd, $nb_nuages, $point_list, $orph_points);
+	var_dump($nb_nuages);
+	print_r($point_list);
+	print_r($orph_points);
+}
+
+
 function main($argc, $argv)
 {
   global $cmd;
@@ -84,11 +111,11 @@ function main($argc, $argv)
     {
       $file = get_fd($argv[1]);
 	  //Notre commande de traitement du fichier et calculs
-	  
+	  categowit($file);
 	  //Generer le fichier de config gnuplot
 
 	  //Ligne pour lancer gnuplot avec le fichier commande qui contient les parametres pour l'affichage gnuplot ( voir "function generate_gnuplot_file()"
-	  exec("gnuplot temp.gnuplot", $output);
+	 // exec("gnuplot temp.gnuplot", $output);
 	}
   else
     usage();
