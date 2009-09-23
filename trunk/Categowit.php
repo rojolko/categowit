@@ -95,12 +95,27 @@ function	make_tabs($fd, &$nb_nuages, &$point_list, &$orph_points)
 	}
 }
 
+function	barycentre(&$barry_c, $point_list, $orph_points)
+{
+	for ($i = 0, $barry_c[x] = 0, $barry_c[y] = 0; isset($point_list[$i]); ++$i)
+	{
+		$barry_c[x] += $point_list[$i][x];
+		$barry_c[y] += $point_list[$i][y];
+	}
+	for ($j = 0; isset($orph_points[$j]); ++$j)
+	{
+		$barry_c[x] += $point_list[$j][x];
+		$barry_c[y] += $point_list[$j][y];	
+	}
+	$barry_c[x] = $barry_c[x] / ($i + $j + 2);
+	$barry_c[y] = $barry_c[y] / ($i + $j + 2);
+}
+
 function	categowit($fd)
 {
 	make_tabs($fd, $nb_nuages, $point_list, $orph_points);
-	var_dump($nb_nuages);
-	print_r($point_list);
-	print_r($orph_points);
+	barycentre($barry_c, $point_list, $orph_points);
+	print_r($barry_c);
 }
 
 
